@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المستخدمين</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="admin-logo">
+            <img src="photo_2026-03-05_16-04-58.jpg" alt="Admin Logo">
+            <span>Admin</span>
+        </div>
+        <ul id="sidebar-menu">
+            <li class="active">
+                <a href="index.html"><i class="fa fa-home"></i><span>الموقع</span></a>
+            </li>
+            <li>
+                <a href="dashboard.html"><i class="fa fa-box"></i><span>لوحة التحكم</span></a>
+            </li>
+            <li>
+                <a href="posts.html"><i class="fa fa-box"></i><span>المنشورات</span></a>
+            </li>
+            <li>
+                <a href="users.html"><i class="fa fa-users"></i><span>المستخدمين</span></a>
+            </li>
+            <li>
+                <a href="messages.html"><i class="fa fa-envelope"></i><span>الرسائل</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        <div class="topbar">
+            <button id="menu-btn"><i class="fa fa-bars"></i></button>
+            <h2 id="page-title">المستخدمين</h2>
+        </div>
+
+        <div class="table-box">
+            <h2>قائمة المستخدمين</h2>
+
+            <!-- زر حذف الكل -->
+            <div style="margin-bottom: 15px; text-align: left;">
+                <button onclick="deleteAllUsers()" class="action-btn reject">
+                    <i class="fa fa-trash"></i> حذف الكل
+                </button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>رقم التعريف</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الغرض الذي شاهده</th>
+                        <th>تاريخ العثور عليه</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const sidebar = document.getElementById("sidebar");
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        // بيانات المستخدمين
+        const users = [{
+            name: "محمد علي",
+            id: "12345678",
+            email: "mohamed@email.com",
+            item: "هاتف محمول",
+            date: "2026-03-20"
+        }, {
+            name: "سارة أحمد",
+            id: "98765432",
+            email: "sara@email.com",
+            item: "مفتاح سيارة",
+            date: "2026-03-22"
+        }];
+
+        function renderUsers() {
+            const tbody = document.getElementById("users-table");
+            tbody.innerHTML = "";
+
+            users.forEach(user => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.id}</td>
+                    <td>${user.email}</td>
+                    <td>${user.item}</td>
+                    <td>${user.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // حذف الكل
+        function deleteAllUsers() {
+            if (confirm("هل أنت متأكد من حذف جميع المستخدمين؟")) {
+                users.length = 0;
+                renderUsers();
+            }
+        }
+
+        renderUsers();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المنشورات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* reset */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f5f5f5;
+            color: #1e3a8a;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        /* sidebar */
+        
+        .sidebar {
+            width: 250px;
+            background: #1e3a8a;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: fixed;
+            top: 0;
+            right: -260px;
+            transition: 0.3s;
+            z-index: 1001;
+            border-radius: 0 0 0 20px;
+            box-shadow: 0 5px 20px rgba(30, 58, 138, 0.4);
+        }
+        
+        .sidebar.show {
+            right: 0;
+        }
+        
+        .sidebar h2 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .sidebar li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #f5f5dc;
+            font-weight: 600;
+            justify-content: center;
+        }
+        
+        .sidebar li i {
+            font-size: 18px;
+            width: 25px;
+            text-align: center;
+            color: #f5f5dc;
+        }
+        
+        .sidebar li span {
+            font-size: 17px;
+            color: #f5f5dc;
+        }
+        
+        .sidebar li:hover {
+            background: linear-gradient(135deg, #87b6e5, #60a5fa);
+            color: #fff;
+        }
+        
+        .sidebar li.active {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+        }
+        /* main */
+        
+        .main {
+            flex: 1;
+            padding: 25px;
+            margin-right: 0;
+            transition: 0.3s;
+            width: 100%;
+        }
+        
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+        
+        #menu-btn {
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: auto;
+        }
+        
+        #menu-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.1);
+        }
+        
+        #page-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            flex: 1;
+        }
+        /* table */
+        
+        .table-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(30, 58, 138, 0.2);
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #1e3a8a;
+        }
+        
+        th,
+        td {
+            padding: 14px;
+            text-align: center;
+        }
+        
+        th {
+            background: #3b82f6;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        td {
+            border-bottom: 1px solid #cbd5e1;
+        }
+        
+        tr:hover {
+            background: #dbeafe;
+        }
+        
+        button.action-btn {
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 2px;
+            transition: 0.3s;
+        }
+        
+        .accept {
+            background: #22c55e;
+            color: #fff;
+        }
+        
+        .accept:hover {
+            background: #16a34a;
+        }
+        
+        .reject {
+            background: #ef4444;
+            color: #fff;
+        }
+        
+        .reject:hover {
+            background: #b91c1c;
+        }
+        
+        .edit {
+            background: #3b82f6;
+            color: #fff;
+        }
+        
+        .edit:hover {
+            background: #1e3a8a;
+        }
+        
+        @media(max-width:768px) {
+            .sidebar {
+                right: -260px;
+            }
+            .sidebar.show {
+                right: 0;
+            }
+            #menu-btn {
+                display: block;
+            }
+        }
+        
+        .sidebar .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .sidebar .admin-logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+        
+        .sidebar .admin-logo span {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="admin-logo">
+            <img src="photo_2026-03-05_16-04-58.jpg" alt="Admin Logo">
+            <span>Admin</span>
+        </div>
+        <ul id="sidebar-menu">
+            <li class="active">
+                <a href="index.html"><i class="fa fa-home"></i><span>الموقع</span></a>
+            </li>
+            <li>
+                <a href="dashboard.html"><i class="fa fa-box"></i><span>لوحة التحكم</span></a>
+            </li>
+            <li>
+                <a href="posts.html"><i class="fa fa-box"></i><span>المنشورات</span></a>
+            </li>
+            <li>
+                <a href="users.html"><i class="fa fa-users"></i><span>المستخدمين</span></a>
+            </li>
+            <li>
+                <a href="messages.html"><i class="fa fa-envelope"></i><span>الرسائل</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <button id="menu-btn"><i class="fa fa-bars"></i></button>
+            <h2 id="page-title">إدارة المنشورات</h2>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الصورة</th>
+                        <th>نوع الغرض</th>
+                        <th>الحالة</th>
+                        <th>عنوان المكان</th>
+                        <th>رقم الهاتف / الإيميل</th>
+                        <th>الوصف</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="posts-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const sidebar = document.getElementById("sidebar");
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        const posts = [{
+            image: "https://via.placeholder.com/50",
+            type: "هاتف محمول",
+            status: "قيد الانتظار",
+            location: "شارع الملك فهد، الرياض",
+            contact: "0551234567",
+            description: "تم العثور عليه في الحديقة"
+        }, {
+            image: "https://via.placeholder.com/50",
+            type: "مفتاح سيارة",
+            status: "قيد الانتظار",
+            location: "شارع التحلية، جدة",
+            contact: "email@example.com",
+            description: "مفتاح على الطاولة"
+        }];
+
+        function renderPosts() {
+            const tbody = document.getElementById("posts-table");
+            tbody.innerHTML = "";
+            posts.forEach((post, index) => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+<td><img src="${post.image}" alt="${post.type}"></td>
+<td>${post.type}</td>
+<td>${post.status==="قيد الانتظار"?`
+<button class="action-btn accept" data-index="${index}">قبول</button>
+<button class="action-btn reject" data-index="${index}">رفض</button>`:post.status}</td>
+<td>${post.location}</td>
+<td>${post.contact}</td>
+<td>${post.description}</td>
+<td>
+<button class="action-btn edit" onclick="editPost(${index})"><i class="fa fa-edit"></i> تعديل</button>
+</td>
+`;
+tbody.appendChild(tr);
+});
+}
+
+function editPost(index){
+const newType=prompt("عدل نوع الغرض:", posts[index].type);
+if(newType) posts[index].type=newType;
+const newLocation=prompt("عدل عنوان المكان:", posts[index].location);
+if(newLocation) posts[index].location=newLocation;
+renderPosts();
+}
+
+document.getElementById("posts-table").addEventListener("click",function(e){
+const index=e.target.dataset.index;
+if(!index) return;
+if(e.target.classList.contains("accept")){posts[index].status="تم القبول"; renderPosts();}
+if(e.target.classList.contains("reject")){posts[index].status="مرفوض"; renderPosts();}
+});
+
+renderPosts();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFL</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <div class="logo-container">
+            <img src="photo_2026-03-05_16-04-58.jpg" class="logo-img">
+            <span class="logo-text">University Found & Lost</span>
+        </div>
+
+        <div class="menu-language-container">
+
+            <!-- MENU -->
+            <div class="menu-container">
+                <button class="dots-btn" id="dots-btn">☰</button>
+
+                <ul class="dropdown-menu" id="dropdown-menu">
+                    <li><a href="index.html">🏠 الرئيسية</a></li>
+                    <li><a href="lost.html">🔍 المفقودات</a></li>
+                    <li><a href="found.html">📦 الموجودات</a></li>
+                    <li><a href="stats.html" data-ar="📊 الإحصائيات" data-en="📊 Stats">📊 الإحصائيات</a></li>
+                    <li><a href="about.html">ℹ️ حول</a></li>
+                    <li><a href="contact.html">✉️تواصل معنا</a></li>
+                    <li><a href="help.html">❓ المساعدة</a></li>
+                </ul>
+            </div>
+
+            <!-- LANGUAGE -->
+            <div class="language-dropdown">
+                <button id="language-btn">🌐</button>
+                <ul id="language-menu" class="language-menu">
+                    <li data-lang="ar">العربية</li>
+                    <li data-lang="en">English</li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- LANDING -->
+    <section class="landing">
+        <video autoplay muted loop class="bg-video">
+        <source src="video_2026-03-05_10-39-09.mp4" type="video/mp4">
+    </video>
+
+        <div class="overlay">
+            <h1 class="title">UniFL</h1>
+            <h2 id="subtitle">منصة مفقودات وموجودات الجامعة</h2>
+            <p id="desc">منصة ذكية تساعد الطلبة على العثور على أغراضهم</p>
+
+            <div class="buttons">
+                <a href="lost.html" class="btn lost">المفقود</a>
+                <a href="found.html" class="btn found">الموجود</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mini-footer">
+        <div class="mini-footer-content">
+            <p>Dalia Haddadi.al© 2026 UniFL. جميع الحقوق محفوظة.</p>
+
+            <div class="footer-links">
+                <a href="help.html">❓ Help</a>
+                <a href="contact.html">✉️ Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="admin-logo">
+            <img src="photo_2026-03-05_16-04-58.jpg" alt="Admin Logo">
+            <span>Admin</span>
+        </div>
+        <ul id="sidebar-menu">
+            <li class="active">
+                <a href="index.html"><i class="fa fa-home"></i><span>الموقع</span></a>
+            </li>
+            <li>
+                <a href="dashboard.html"><i class="fa fa-box"></i><span>لوحة التحكم</span></a>
+            </li>
+            <li>
+                <a href="posts.html"><i class="fa fa-box"></i><span>المنشورات</span></a>
+            </li>
+            <li>
+                <a href="users.html"><i class="fa fa-users"></i><span>المستخدمين</span></a>
+            </li>
+            <li>
+                <a href="messages.html"><i class="fa fa-envelope"></i><span>الرسائل</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="topbar">
+            <button id="menu-btn"><i class="fa fa-bars"></i></button>
+            <h2 id="page-title">لوحة التحكم</h2>
+        </div>
+
+        <div id="dashboard" class="section active">
+            <div class="cards">
+                <div class="card green"><i class="fa fa-check"></i>
+                    <h3>0</h3>
+                    <p>مقبولة</p>
+                </div>
+                <div class="card red"><i class="fa fa-times"></i>
+                    <h3>0</h3>
+                    <p>مرفوضة</p>
+                </div>
+                <div class="card orange"><i class="fa fa-clock"></i>
+                    <h3>0</h3>
+                    <p>معلقة</p>
+                </div>
+                <div class="card blue"><i class="fa fa-box"></i>
+                    <h3>0</h3>
+                    <p>الإجمالي</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const sidebar = document.getElementById("sidebar");
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+
+            const titles = {
+                dashboard: "لوحة التحكم",
+                posts: "إدارة المنشورات",
+                users: "المستخدمين",
+                messages: "الرسائل"
+            };
+            document.getElementById("page-title").innerText = titles[id];
+
+            document.querySelectorAll('#sidebar-menu li').forEach(li => li.classList.remove('active'));
+            document.querySelector(`#sidebar-menu li[onclick="showSection('${id}')"]`).classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>

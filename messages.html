@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرسائل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+
+    <style>
+        /* حذف الكل */
+        
+        #delete-all {
+            background: #ef4444;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        #delete-all:hover {
+            background: #b91c1c;
+        }
+        
+        .messages .msg-card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+            position: relative;
+        }
+        
+        .msg-card h4 {
+            margin-bottom: 5px;
+            color: #1e3a8a;
+        }
+        
+        .msg-card p {
+            margin-bottom: 10px;
+        }
+        
+        .msg-card small {
+            color: #3b82f6;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .msg-card .btn {
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 5px;
+            margin-right: 5px;
+            transition: 0.3s;
+        }
+        
+        .reply-btn {
+            background: #3b82f6;
+            color: #fff;
+        }
+        
+        .reply-btn:hover {
+            background: #1e3a8a;
+        }
+        
+        .delete-btn {
+            background: #ef4444;
+            color: #fff;
+        }
+        
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+        
+        .reply-input {
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            width: 70%;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .reply {
+            background: #dbeafe;
+            padding: 8px;
+            border-radius: 10px;
+            margin-top: 5px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="admin-logo">
+            <img src="photo_2026-03-05_16-04-58.jpg" alt="Admin Logo">
+            <span>Admin</span>
+        </div>
+        <ul id="sidebar-menu">
+            <li class="active">
+                <a href="index.html"><i class="fa fa-home"></i><span>الموقع</span></a>
+            </li>
+            <li>
+                <a href="dashboard.html"><i class="fa fa-box"></i><span>لوحة التحكم</span></a>
+            </li>
+            <li>
+                <a href="posts.html"><i class="fa fa-box"></i><span>المنشورات</span></a>
+            </li>
+            <li>
+                <a href="users.html"><i class="fa fa-users"></i><span>المستخدمين</span></a>
+            </li>
+            <li>
+                <a href="messages.html"><i class="fa fa-envelope"></i><span>الرسائل</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <button id="menu-btn"><i class="fa fa-bars"></i></button>
+            <h2 id="page-title">الرسائل</h2>
+        </div>
+
+        <div id="messages" class="section active">
+            <div class="messages">
+                <button id="delete-all" onclick="deleteAllMessages()">حذف الكل</button>
+                <div id="messages-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const sidebar = document.getElementById("sidebar");
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+
+            const titles = {
+                dashboard: "لوحة التحكم",
+                posts: "إدارة المنشورات",
+                users: "المستخدمين",
+                messages: "الرسائل"
+            };
+            document.getElementById("page-title").innerText = titles[id];
+
+            document.querySelectorAll('#sidebar-menu li').forEach(li => li.classList.remove('active'));
+            document.querySelector(`#sidebar-menu li[onclick="showSection('${id}')"]`).classList.add('active');
+        }
+
+        // بيانات تجريبية مع ردود جاهزة
+        let messages = [{
+            name: "محمد علي",
+            email: "mohamed@email.com",
+            text: "هل تم العثور على هاتفي؟",
+            date: "2026-03-27",
+            replies: ["نعم، تم العثور عليه بالقرب من المدرسة"]
+        }, {
+            name: "سارة أحمد",
+            email: "sara@email.com",
+            text: "أبحث عن مفتاح سيارتي",
+            date: "2026-03-26",
+            replies: ["تم العثور على المفتاح في مكتبة الحي"]
+        }];
+
+        function saveData() {
+            localStorage.setItem("messages", JSON.stringify(messages));
+        }
+
+        function renderMessages() {
+            const list = document.getElementById("messages-list");
+            list.innerHTML = "";
+
+            messages.forEach((msg, index) => {
+                        const card = document.createElement("div");
+                        card.className = "msg-card";
+
+                        card.innerHTML = `
+            <h4>${msg.name}</h4>
+            <small>${msg.email} | ${msg.date}</small>
+            <p>${msg.text}</p>
+            ${msg.replies.map(r => `<div class="reply">${r}</div>`).join("")}
+            <input type="text" class="reply-input" id="reply-${index}" placeholder="اكتب رد...">
+            <button class="btn reply-btn" onclick="addReply(${index})">رد</button>
+            <button class="btn delete-btn" onclick="deleteMessage(${index})">حذف</button>
+        `;
+        list.appendChild(card);
+    });
+}
+
+function addReply(index) {
+    const input = document.getElementById(`reply-${index}`);
+    const value = input.value.trim();
+
+    if(value !== "") {
+        messages[index].replies.push(value);
+        input.value = "";
+        saveData();
+        renderMessages();
+    }
+}
+
+function deleteMessage(index) {
+    if(confirm("هل تريد حذف هذه الرسالة؟")) {
+        messages.splice(index, 1);
+        saveData();
+        renderMessages();
+    }
+}
+
+function deleteAllMessages() {
+    if(confirm("هل تريد حذف جميع الرسائل؟")) {
+        messages = [];
+        saveData();
+        renderMessages();
+    }
+}
+
+renderMessages();
+    </script>
+
+</body>
+
+</html>
